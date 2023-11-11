@@ -5,7 +5,9 @@ Dashdot allows you to easily link and delink your dotfiles so that you don't hav
 Dotfiles in unix based operating systems refers to files that start with a `.` in their name. They are hidden according to your operating system due to [historic](https://web.archive.org/web/20140803082229/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp) reasons. Most applications store their config files inside these hidden folders to prevent clutter in the user's home directory.
 
 ## Motivation
-I used to use GNU Stow to manage my dotfiles on linux and while it does an okay job at symlinking your files, it cannot do things more complicated. Delinking already symlinked files is a pain as you have to manually go back to every single symlink and delete them. You also cannot go directly to edit `that` one file that you always edit in your configurations unless you hack together a flimsy bash script to do that. 
+I used to use GNU Stow to manage my dotfiles on linux and while it does an okay job at symlinking your files, it cannot do things more complicated
+- Delinking already symlinked files is a pain as you have to go back to every symlink and delete them.
+- You cannot go directly to edit `that` one file that you always edit in your configurations unless you hack together a flimsy bash script to do that. 
 
 Meet dashdot. A program to easily symlink your dotfiles.
 
