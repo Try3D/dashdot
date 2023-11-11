@@ -1,7 +1,7 @@
 # dashdot
 Dashdot allows you to easily link and delink your dotfiles so that you don't have to worry about losing your precious configuration files when switching computers or operating systems
 
-## What are dotfiles
+## What are dotfiles?
 Dotfiles in unix based operating systems refers to files that start with a `.` in their name. They are hidden according to your operating system due to [historic](https://web.archive.org/web/20140803082229/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp) reasons. Most applications store their config files inside these hidden folders to prevent clutter in the user's home directory.
 
 ## Motivation
@@ -10,6 +10,12 @@ I used to use GNU Stow to manage my dotfiles on linux and while it does an okay 
 - You cannot go directly to edit `that` one file that you always edit in your configurations unless you hack together a flimsy bash script to do that. 
 
 Meet dashdot. A program to easily symlink your dotfiles.
+
+## Installation
+- Install `pip` or `anaconda` from your operating system's package manager
+- Run
+
+    $ `pip install dashdot`
 
 ## Usage
 ```
