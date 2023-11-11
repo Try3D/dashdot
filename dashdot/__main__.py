@@ -38,6 +38,8 @@ def main():
 
 def link_dotfiles(dotfiles_config):
     for section, settings in dotfiles_config.items():
+        if section == "editor":
+            continue
         location = os.path.expandvars(settings.get("location", ""))
 
         if not location:
@@ -57,6 +59,8 @@ def link_dotfiles(dotfiles_config):
 
 def delink_dotfiles(dotfiles_config):
     for section, settings in dotfiles_config.items():
+        if section == "editor":
+            continue
         location = os.path.expandvars(settings.get("location", ""))
 
         if not location:
