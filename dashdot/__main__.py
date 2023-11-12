@@ -1,5 +1,6 @@
 import os
 import sys
+import distro
 import tomllib
 import subprocess
 import argparse
@@ -10,10 +11,10 @@ CONFIG_FILE = "config.toml"
 def main():
     parser = argparse.ArgumentParser(
         description="Dashdot-dotfiles manager",
-        usage="ds {command} [link delink edit]"
+        usage="ds [command] {link delink edit}"
     )
     parser.add_argument("command", choices=[
-                        "link", "delink", "edit"], help="Command to perform")
+                        "link", "delink", "edit", "bootstrap", "update"], help="Command to do")
     parser.add_argument("config", nargs="?", help="Configuration to edit")
 
     if len(sys.argv) < 2:
@@ -34,11 +35,15 @@ def main():
         delink_dotfiles(config)
     elif args.command == "edit":
         edit_dotfiles(config, args.config)
+    elif args.command == "bootstrap":
+        bootstrap_system(config)
+    elif args.command == "update":
+        update_system(config)
 
 
 def link_dotfiles(dotfiles_config):
     for section, settings in dotfiles_config.items():
-        if section == "editor":
+        if section in ["editor", "bootstrap", "update"]:
             continue
 
         locations = settings.get("location", [])
@@ -71,7 +76,7 @@ def link_dotfiles(dotfiles_config):
 
 def delink_dotfiles(dotfiles_config):
     for section, settings in dotfiles_config.items():
-        if section == "editor":
+        if section in ["editor", "bootstrap", "update"]:
             continue
         locations = settings.get("location", [])
 
@@ -118,6 +123,39 @@ def edit_dotfiles(dotfiles_config, config_to_edit=None):
         for section in dotfiles_config.keys():
             if section != "editor":
                 print(section)
+
+
+def bootstrap_system(dotfiles_config):
+    print("Bootstraping system\n")
+    print("Linking your dotfiles")
+    link_dotfiles(dotfiles_config)
+
+    bootstrap = dotfiles_config.get("bootstrap")
+    platform = sys.platform
+
+    if platform == "linux":
+        commands = bootstrap["linux"][distro.id()]
+    else:
+        commands = bootstrap[platform]
+
+    for n, command in enumerate(commands):
+        print(f"\nTask: {n + 1}")
+        subprocess.run(command.split())
+
+
+def update_system(dotfiles_config):
+    print("Updating system")
+    update = dotfiles_config.get("update")
+    platform = sys.platform
+
+    if platform == "linux":
+        commands = update["linux"][distro.id()]
+    else:
+        commands = update[platform]
+
+    for n, command in enumerate(commands):
+        print(f"\nTask: {n + 1}")
+        subprocess.run(command.split())
 
 
 if __name__ == "__main__":

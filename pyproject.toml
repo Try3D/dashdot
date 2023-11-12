@@ -1,6 +1,6 @@
 [project]
 name = "dashdot"
-version = "0.0.3"
+version = "0.0.4"
 authors = [{ name = "Try3D", email = "rsarans186@gmail.com" }]
 description = "A dotfiles manager to cure my sucky workflow"
 readme = "README.md"

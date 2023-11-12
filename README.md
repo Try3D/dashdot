@@ -2,19 +2,19 @@
 Dashdot allows you to easily link and delink your dotfiles so that you don't have to worry about losing your precious configuration files when swiching operating systems or computers.
 
 ## What are dotfiles?
-DotFiles in unix based operating systems refers to files that start with a `.` in their name. They are hidden according to your operating system due to [historic](https://web.archive.org/web/20140803082229/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp) reasons. Most applications store their config files inside these hidden folders to prevent clutter in the user's home directory.
+Dotfiles in unix based operating systems are files that start with a `.` in their name. They are "considered" hidden according to your operating system due to [historic](https://web.archive.org/web/20140803082229/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp) reasons. Most applications store their config files inside these hidden folders to prevent clutter in the user's home directory. Keeping your dotfiles synced between multiple computers can help you get the same setup on multiple computers.
 
 ## Motivation
-I used to use GNU Stow to make backups store them in multiple computers and while it does an okay job at symlinking your files, it cannot do things more complicated
-- It expects a specific directory structure for it to work optimally
+I used to use GNU Stow to make backups and store dotfiles and while it does an okay job at symlinking your files, it cannot do things more complicated.
+- It expects a specific directory structure for it to work.
 - Delinking already symlinked files is a pain as you have to go back to every symlink and delete them.
-- You cannot go directly to edit `that` one file that you always edit in your configurations unless you hack together a flimsy bash script.
+- You cannot go directly to edit `that` one file that you always edit in your configurations unless you hack together a flimsy shell script.
 - It does not have good logging and error handling.
 
-Meet dashdot. A program to easily symlink your dotfiles.
+Meet dashdot. A program to easily manage your dotfiles imho.
 
 ## Installation
-- Install `pip` or `anaconda` from your operating system's package manager
+- Install `pip` from your operating system's package manager
 - Run
 
     $ `pip install dashdot`
@@ -22,24 +22,36 @@ Meet dashdot. A program to easily symlink your dotfiles.
 
     $ `bindkey -s '^w' "cd ~/dotfiles;  ds edit \$\(ds edit \| fzf\); cd -\n"`
   
-    Over here, it binds the key `Ctrl+w` to bring an fzf menu to directly go to edit the file.
+    Over here, it binds `Ctrl+w` to bring an fzf menu to directly go to edit the file.
 
 ## Usage
 - Create a dotfiles folder
 - Add in folders with your config files
+
 Example `config.toml` file
 ```toml
 editor = "nvim" # Specifies what editor to use for edit flag(Defaults to nano if empty)
 
 [alacritty] # This corresponds to a specific folder in the dotfiles directory
-location = "$HOME/.config/alacritty" # This is the location it gets symlinked to
+location = "$HOME/.config/alacritty" # If passing a string, this is the location the directory gets symlinked to
 main = "alacritty.yml" # This is the file that gets edited when using the edit flag
 
 [zsh]
-location = [{src = "zshrc", dest = "$HOME/.zshrc" }, {src = "p10k.zsh", dest = "$HOME/.p10k.zsh"}] # If passing an array of dicts to location, each list item's src is linked to the destination
+location = [{src = "zshrc", dest = "$HOME/.zshrc" }, {src = "p10k.zsh", dest = "$HOME/.p10k.zsh"}] # If passing an array of dicts to location, each list item's src file is linked to the destination
 main = "zshrc"
+
+[bootstrap]
+linux.fedora = ["sudo dnf upgrade"] # This command is run when you use Fedora linux
+linux.ubuntu = ["sudo apt update", "sudo apt upgrade"] # Multiple commands can be passed to the list
+darwin = ["brew update", "brew upgrade"] # Darwin is for mac
+win32 = ["echo Why would you use windows"] # Win32 is for windows
 ```
-running
+## Commands
+- link - To link your dotfiles to specific locations in the file system
+- delink - To safely delete symlinks
+- edit - To go to edit the main file in the directory
+- bootstrap - To bootstrap the system
+- update - To update the system
 
 ## Example
 If you want to see an example configuration repo, you can see my [dotfiles](https://github.com/Try3D/dotfiles)
