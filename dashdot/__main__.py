@@ -14,7 +14,7 @@ def main():
         usage="ds [command] {link delink edit}"
     )
     parser.add_argument("command", choices=[
-                        "link", "delink", "edit", "bootstrap", "update"], help="Command to do")
+                        "link", "delink", "edit", "bootstrap", "update"], help="Command to be run")
     parser.add_argument("config", nargs="?", help="Configuration to edit")
 
     if len(sys.argv) < 2:
@@ -81,7 +81,7 @@ def delink_dotfiles(dotfiles_config):
         locations = settings.get("location", [])
 
         if not locations:
-            print(f"Invalid configuration for '{section}'")
+            print(f"Invalid configuration for '{section}'. Skipping.")
             continue
 
         if isinstance(locations, str):
@@ -102,7 +102,7 @@ def delink_dotfiles(dotfiles_config):
                     print(f"Symlink not found: {dst_path}")
 
 
-def edit_dotfiles(dotfiles_config, config_to_edit=None):
+def edit_dotfiles(dotfiles_config, config_to_edit):
     if config_to_edit and config_to_edit in dotfiles_config:
         editor = dotfiles_config.get("editor", "nano")
         main_file = dotfiles_config[config_to_edit].get("main", "")
@@ -110,18 +110,17 @@ def edit_dotfiles(dotfiles_config, config_to_edit=None):
         if main_file:
             dotfiles_path = os.path.join(os.path.abspath("."), config_to_edit)
             src_path = os.path.join(dotfiles_path, main_file)
+            print(editor.split() + [src_path])
+            print(src_path)
             try:
-                if " " in editor:
-                    subprocess.run(editor, shell=True, check=True)
-                else:
-                    subprocess.run([editor, src_path], check=True)
+                subprocess.run(editor.split() + [src_path])
             except subprocess.CalledProcessError as e:
                 print(f"Error while editing file: {e}")
         else:
             print(f"Invalid configuration for '{config_to_edit}'.")
     else:
         for section in dotfiles_config.keys():
-            if section != "editor":
+            if section not in ["editor", "update", "bootstrap"]:
                 print(section)
 
 
