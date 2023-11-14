@@ -45,13 +45,16 @@ linux.fedora = ["sudo dnf upgrade"] # This command is run when you use Fedora li
 linux.ubuntu = ["sudo apt update", "sudo apt upgrade"] # Multiple commands can be passed to the list
 darwin = ["brew update", "brew upgrade"] # Darwin is for mac
 win32 = ["echo Why would you use windows"] # Win32 is for windows
+
+[update] # Pretty much the same as bootstrap except run when update is passed
+linux.linuxmint = ["flatpak update"]
 ```
 ## Commands
-- link - To link your dotfiles to specific locations in the file system
-- delink - To safely delete symlinks
-- edit - To go to edit the main file in the directory
-- bootstrap - To bootstrap the system
-- update - To update the system
+- `ds link` - To link your dotfiles to specific locations in the file system
+- `ds delink` - To safely delete symlinks
+- `ds edit` - To go to edit the main file in the directory
+- `ds bootstrap` - To bootstrap the system
+- `ds update` - To update the system
 
 ## Example
 If you want to see an example configuration repo, you can see my [dotfiles](https://github.com/Try3D/dotfiles)
